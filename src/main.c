@@ -1,27 +1,4 @@
-// #include "include/main.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#define INITIAL_CAPACITY 10
-
-typedef struct
-{
-    char *name;
-    char *value;
-} field_t;
-typedef struct
-{
-    int field_count;
-    field_t *fields; // array
-} row_t;
-typedef struct
-{
-    char **headers;
-    row_t *rows;
-    int header_count;
-    int line_count;
-} csv_data_t;
-
+#include "main.h"
 void parse_args(char **argv)
 {
     while (*argv)
@@ -36,7 +13,7 @@ int main(int argc, char **argv)
     char **lines = NULL;
     char *file_path = NULL;
     printf("first arg: %s", *argv);
-    if (strcmp(argv[1], "--filepath") == 0)
+    if (argv[1] && strcmp(argv[1], "--filepath") == 0)
     {
         file_path = argv[2];
         printf("Filepath was provided, %s\n", file_path);
