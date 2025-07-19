@@ -22,4 +22,10 @@ typedef struct
     int header_count;
     int line_count;
 } csv_data_t;
+typedef struct
+{
+    char *file_location;
+    char *output_location;
+} user_arugments;
+void parse_args(int argc, char **argv, user_arugments *user_arugments);
 #endif
