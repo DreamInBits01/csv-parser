@@ -1,9 +1,9 @@
 #include "headers.h"
 Headers get_headers(FILE *csv_file_fd)
 {
-    int headers_capacity = 5;
-    char **headers = malloc(headers_capacity * sizeof(char *));
-    if (headers == NULL)
+    int headers_capacity = INITIAL_HEADERS_CAPACITY;
+    char **data = malloc(headers_capacity * sizeof(char *));
+    if (data == NULL)
     {
         printf("Headers allocation failed!");
         exit(1);
@@ -21,30 +21,30 @@ Headers get_headers(FILE *csv_file_fd)
 
             if (headers_count >= headers_capacity)
             {
-                headers_capacity += 5;
-                headers = realloc(headers, headers_capacity * sizeof(char *));
-                if (headers == NULL)
+                headers_capacity += INITIAL_HEADERS_CAPACITY;
+                data = realloc(data, headers_capacity * sizeof(char *));
+                if (data == NULL)
                 {
                     printf("Headers allocation failed!");
                     exit(1);
                 }
             }
             // malloc memory for the header
-            headers[headers_count] = malloc(strlen(token) + 1);
-            if (headers[headers_count] == NULL)
+            data[headers_count] = malloc(strlen(token) + 1);
+            if (data[headers_count] == NULL)
             {
                 printf("Headers allocation failed!");
                 exit(1);
             };
             // copy the header into the allocated memory
-            strcpy(headers[headers_count], token);
-            printf("Added header:%s\n", headers[headers_count]);
+            strcpy(data[headers_count], token);
+            printf("Added header:%s\n", data[headers_count]);
             token = strtok(NULL, ",");
             headers_count++;
         }
     }
     Headers headers_struct = {0};
-    headers_struct.data = headers;
+    headers_struct.data = data;
     headers_struct.count = headers_count;
     return headers_struct;
 }
@@ -54,13 +54,12 @@ void free_headers(Headers *headers)
     {
         for (size_t i = 0; i < headers->count; i++)
         {
-            /* code */
-            printf("Header:%s\n", headers->data[i]);
             free(headers->data[i]);
         }
     }
     else
     {
-        printf("No headers were provided to be freed!");
+        printf("No headers were provided to be freed!\n");
+        exit(1);
     }
 }
