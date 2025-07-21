@@ -3,6 +3,8 @@
     "*.page-template": "vue",
     "*.layout-template": "vue",
     "*.vue": "vue",
-    "main.h": "c"
+    "main.h": "c",
+    "headers.h": "c",
+    "utils.h": "c"
   }
 }
