@@ -1,11 +1,11 @@
 #include "headers.h"
 Headers get_headers(FILE *csv_file_fd)
 {
-    int headers_capacity = INITIAL_HEADERS_CAPACITY;
-    char **data = malloc(headers_capacity * sizeof(char *));
+    int data_capacity = INITIAL_HEADERS_CAPACITY;
+    char **data = malloc(data_capacity * sizeof(char *));
     if (data == NULL)
     {
-        printf("Headers allocation failed!");
+        PRINT_ERROR(ALLOCATION_ERROR, "Headers");
         exit(1);
     };
     int headers_count = 0;
@@ -13,40 +13,44 @@ Headers get_headers(FILE *csv_file_fd)
     if (fgets(buffer, MAX_LINE_LENGTH, csv_file_fd))
     {
         buffer[strcspn(buffer, "\r\n")] = 0; // strip trailing newline
-        char *token = strtok(buffer, ",");
+        char *token = strtok(remove_comma_between_quotes(buffer), ",");
         // int current_token = 0;
         while (token != NULL)
         {
-            // each token is a header string;
 
-            if (headers_count >= headers_capacity)
+            if (headers_count >= data_capacity)
             {
-                headers_capacity += INITIAL_HEADERS_CAPACITY;
-                data = realloc(data, headers_capacity * sizeof(char *));
-                if (data == NULL)
+                data_capacity += INITIAL_HEADERS_CAPACITY;
+                char **temp = realloc(data, data_capacity * sizeof(char *));
+                if (temp == NULL)
                 {
-                    printf("Headers allocation failed!");
+                    // clean up headers
+
+                    PRINT_ERROR(ALLOCATION_ERROR, "Headers");
+                    free(data);
                     exit(1);
                 }
+                data = temp;
             }
             // malloc memory for the header
-            data[headers_count] = malloc(strlen(token) + 1);
+            data[headers_count] = strdup(token);
             if (data[headers_count] == NULL)
             {
-                printf("Headers allocation failed!");
+                PRINT_ERROR(ALLOCATION_ERROR, "Headers");
+                // clean up headers
                 exit(1);
             };
             // copy the header into the allocated memory
-            strcpy(data[headers_count], token);
+            // strcpy(data[headers_count], token);
             printf("Added header:%s\n", data[headers_count]);
             token = strtok(NULL, ",");
             headers_count++;
         }
     }
-    Headers headers_struct = {0};
-    headers_struct.data = data;
-    headers_struct.count = headers_count;
-    return headers_struct;
+    Headers headers = {0};
+    headers.data = data;
+    headers.count = headers_count;
+    return headers;
 }
 void free_headers(Headers *headers)
 {
@@ -61,5 +65,8 @@ void free_headers(Headers *headers)
     {
         printf("No headers were provided to be freed!\n");
         exit(1);
-    }
+    };
+    free(headers->data);
+    headers->data = NULL;
+    headers->count = 0;
 }

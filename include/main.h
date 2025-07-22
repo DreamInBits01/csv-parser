@@ -6,7 +6,7 @@
 #include "global.h"
 #include "utils.h"
 #include "headers.h"
-#define INITIAL_LINES_CAPACITY 10
+#define INITIAL_LINES_CAPACITY 50
 typedef struct
 {
     char *name;

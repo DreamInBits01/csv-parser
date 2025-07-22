@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "global.h"
+#include "error_messages.h"
+#include "printf_macros.h"
+#include "utils.h"
 #define INITIAL_HEADERS_CAPACITY 5
 #define MAX_LINE_LENGTH 1012
 
