@@ -29,8 +29,6 @@ int main(int argc, char **argv)
             }
             lines = temp;
         }
-        // lines[lines_count] = (Row *)malloc(sizeof(Row));
-        // printf("Current line:%s", lines[lines_count].fields->name);
         lines[lines_count].fields = malloc(headers.count * sizeof(Field));
         if (!lines[lines_count].fields)
         {
@@ -42,12 +40,13 @@ int main(int argc, char **argv)
         int token_place = 0;
         while (token != NULL && token_place < headers.count)
         {
+            char *clean_token = remove_quotes(token);
             lines[lines_count].fields[token_place].name = headers.data[token_place];
-            lines[lines_count].fields[token_place].value = strdup(token);
+            lines[lines_count].fields[token_place].value = strdup(clean_token);
 
             if (!lines[lines_count].fields[token_place].value)
             {
-                fprintf(stderr, "strdup failed for token: %s\n", token);
+                fprintf(stderr, "strdup failed for token: %s\n", clean_token);
                 free_headers(&headers);
 
                 for (int k = 0; k < token_place; k++)

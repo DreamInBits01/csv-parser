@@ -46,25 +46,28 @@ char *remove_quotes(char *buffer)
     };
     if (buffer_length > 0)
     {
-        buffer[buffer_length - 1] = '\0';
+        if (buffer[buffer_length - 2] == '"')
+        {
+            buffer[buffer_length - 2] = '\0';
+        }
     }
     return buffer;
 }
 char *remove_comma_between_quotes(char *buffer)
 {
-    bool possible_comma_between_quotes = false;
+    bool inside_quotes = false;
     int buffer_length = strlen(buffer);
     for (size_t i = 0; i < buffer_length; i++)
     {
-        if (buffer[i] == '"' && possible_comma_between_quotes)
+        if (buffer[i] == '"' && inside_quotes)
         {
-            possible_comma_between_quotes = false;
+            inside_quotes = false;
         }
-        else if (buffer[i] == '"' && possible_comma_between_quotes == false)
+        else if (buffer[i] == '"' && inside_quotes == false)
         {
-            possible_comma_between_quotes = true;
+            inside_quotes = true;
         };
-        if (possible_comma_between_quotes)
+        if (inside_quotes)
         {
             if (buffer[i] == ',')
             {
@@ -74,3 +77,38 @@ char *remove_comma_between_quotes(char *buffer)
     };
     return buffer;
 }
+
+// char *remove_comma_between_quotes(char *buffer)
+// {
+//     bool inside_quotes = false;
+//     int buffer_length = strlen(buffer);
+//     for (size_t i = 0; i < buffer_length; i++)
+//     {
+//         if (buffer[i] == '"')
+//         {
+//             if (inside_quotes)
+//             {
+//                 if (buffer[i + 1] == '"')
+//                 {
+//                     i++; // Escaped quote: skip next
+//                 }
+//                 else
+//                 {
+//                     inside_quotes = false; // Closing quote
+//                 }
+//             }
+//             else
+//             {
+//                 inside_quotes = true; // Opening quote
+//             }
+//         }
+//         if (inside_quotes)
+//         {
+//             if (buffer[i] == ',')
+//             {
+//                 buffer[i] = '.';
+//             }
+//         }
+//     };
+//     return buffer;
+// }
