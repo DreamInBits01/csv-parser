@@ -77,7 +77,33 @@ char *remove_comma_between_quotes(char *buffer)
     };
     return buffer;
 }
+// void write_csv_row(FILE *fd, Row **rows, int rows_count)
+// {
+//     for (size_t i = 0; i < rows_count; i++)
+//     {
+//         for (size_t j = 0; j < rows[i]->field_count; j++)
+//         {
+//             fputs(rows[i]->fields[j].value, fd);
+//             if (i < rows[i]->field_count - 1)
+//             {
+//                 fputs(",", fd);
+//             }
+//         }
+//         fputs("\n", fd);
+//     }
+// }
+void write_csv_row(FILE *fd, const Row *row)
+{
+    for (size_t i = 0; i < row->field_count; i++)
+    {
 
+        fputs(row->fields[i].value, fd);
+        if (i < row->field_count - 1)
+        {
+            fputs(",", fd);
+        }
+    }
+}
 // char *remove_comma_between_quotes(char *buffer)
 // {
 //     bool inside_quotes = false;

@@ -6,17 +6,8 @@
 #include "global.h"
 #include "utils.h"
 #include "headers.h"
+#include "rows.h"
 #define INITIAL_LINES_CAPACITY 50
-typedef struct
-{
-    char *name;
-    char *value;
-} Field;
-typedef struct
-{
-    int field_count;
-    Field *fields; // array
-} Row;
 typedef struct
 {
     char **headers;

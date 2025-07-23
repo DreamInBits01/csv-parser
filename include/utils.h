@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include "printf_macros.h"
 #include "error_messages.h"
+#include "rows.h"
 typedef struct
 {
     char *file_location;
@@ -14,4 +15,6 @@ typedef struct
 void parse_args(int argc, char **argv, UserArguments *user_arugments);
 char *remove_quotes(char *buffer);
 char *remove_comma_between_quotes(char *buffer);
+// void write_csv_row(FILE *fd, Row **rows, int rows_count);
+void write_csv_row(FILE *fd, const Row *row);
 #endif
