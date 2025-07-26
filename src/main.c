@@ -43,30 +43,6 @@ int main(int argc, char **argv)
         char *token = strtok(remove_comma_between_quotes(buffer), ",");
         size_t token_index = 0;
         parse_row(&csv_data, token, &token_index, csv_file);
-        // while (token != NULL && token_index < csv_data.headers.count)
-        // {
-        //     char *clean_token = remove_quotes(token);
-        //     csv_data.rows[csv_data.rows_count].fields[token_index].name = csv_data.headers.data[token_index];
-        //     csv_data.rows[csv_data.rows_count].fields[token_index].value = strdup(clean_token);
-
-        //     if (!csv_data.rows[csv_data.rows_count].fields[token_index].value)
-        //     {
-        //         fprintf(stderr, "strdup failed for token: %s\n", clean_token);
-        //         // free current field and it's tokens,
-        //         for (int i = 0; i < token_index; i++)
-        //         {
-        //             free(csv_data.rows[csv_data.rows_count].fields[i].value);
-        //         }
-        //         free(csv_data.rows[csv_data.rows_count].fields);
-        //         free_rows(csv_data.rows, csv_data.rows_count);
-        //         free_headers(&csv_data.headers);
-        //         fclose(csv_file);
-        //         exit(1);
-        //     }
-        //     // get headers, loop over tokens, for each token create a field struct with the key and value, then push it to the row, finally push the row
-        //     token = strtok(NULL, ",");
-        //     token_index++;
-        // }
         csv_data.rows[csv_data.rows_count].field_count = token_index;
         token_index = 0;
         csv_data.rows_count++;
