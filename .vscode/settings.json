@@ -6,6 +6,8 @@
     "main.h": "c",
     "headers.h": "c",
     "utils.h": "c",
-    "rows.h": "c"
+    "rows.h": "c",
+    "csv_data_struct.h": "c",
+    "stdio.h": "c"
   }
 }

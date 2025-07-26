@@ -8,10 +8,4 @@
 #include "headers.h"
 #include "rows.h"
 #define INITIAL_LINES_CAPACITY 50
-typedef struct
-{
-    Headers headers;
-    Row *rows;
-    size_t rows_count;
-} CsvData;
 #endif

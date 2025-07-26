@@ -42,7 +42,6 @@ Headers get_headers(FILE *csv_file_fd)
             };
             // copy the header into the allocated memory
             // strcpy(data[headers_count], token);
-            printf("Added header:%s\n", data[headers_count]);
             token = strtok(NULL, ",");
             headers_count++;
         }
