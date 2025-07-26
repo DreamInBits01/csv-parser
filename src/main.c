@@ -9,73 +9,66 @@ int main(int argc, char **argv)
         PRINT_ERROR(FILE_NOT_FOUND);
         exit(1);
     }
-    int rows_count = 0;
     char buffer[MAX_LINE_LENGTH];
-    Headers headers = get_headers(csv_file);
-    int capacity = INITIAL_LINES_CAPACITY;
-    Row *rows = NULL;
-    rows = (Row *)malloc(capacity * sizeof(Row));
+    int rows_capacity = INITIAL_LINES_CAPACITY;
+    CsvData csv_data = {0};
+    csv_data.headers = get_headers(csv_file);
+    csv_data.rows = (Row *)malloc(rows_capacity * sizeof(Row));
+    csv_data.rows_count = 0;
     while (fgets(buffer, MAX_LINE_LENGTH, csv_file))
     {
-        if (rows_count >= capacity)
+        if (csv_data.rows_count >= rows_capacity)
         {
-            capacity *= 2;
-            Row *temp = realloc(rows, capacity * sizeof(Row));
+            rows_capacity *= 2;
+            Row *temp = realloc(csv_data.rows, rows_capacity * sizeof(Row));
             if (!temp)
             {
                 fprintf(stderr, "Failed to realloc lines array\n");
-                free(rows);
+                free_rows(csv_data.rows, csv_data.rows_count);
+                free_headers(&csv_data.headers);
                 return 1;
             }
-            rows = temp;
+            csv_data.rows = temp;
         }
-        rows[rows_count].fields = malloc(headers.count * sizeof(Field));
-        if (!rows[rows_count].fields)
+        csv_data.rows[csv_data.rows_count].fields = malloc(csv_data.headers.count * sizeof(Field));
+        if (!csv_data.rows[csv_data.rows_count].fields)
         {
-            fprintf(stderr, "Memory allocation failed\n");
+            PRINT_ERROR(ALLOCATION_ERROR, "Fields");
+            // free memory
+            free_rows(csv_data.rows, csv_data.rows_count);
+            free_headers(&csv_data.headers);
             return 1;
         }
         buffer[strcspn(buffer, "\r\n")] = 0; // strip trailing newline
         char *token = strtok(remove_comma_between_quotes(buffer), ",");
-        int token_place = 0;
-        while (token != NULL && token_place < headers.count)
+        int token_index = 0;
+        while (token != NULL && token_index < csv_data.headers.count)
         {
             char *clean_token = remove_quotes(token);
-            rows[rows_count].fields[token_place].name = headers.data[token_place];
-            rows[rows_count].fields[token_place].value = strdup(clean_token);
+            csv_data.rows[csv_data.rows_count].fields[token_index].name = csv_data.headers.data[token_index];
+            csv_data.rows[csv_data.rows_count].fields[token_index].value = strdup(clean_token);
 
-            if (!rows[rows_count].fields[token_place].value)
+            if (!csv_data.rows[csv_data.rows_count].fields[token_index].value)
             {
                 fprintf(stderr, "strdup failed for token: %s\n", clean_token);
-                free_headers(&headers);
-
-                for (int k = 0; k < token_place; k++)
+                // free current field and it's tokens,
+                for (int i = 0; i < token_index; i++)
                 {
-                    free(rows[rows_count].fields[k].value);
+                    free(csv_data.rows[csv_data.rows_count].fields[i].value);
                 }
-                free(rows[rows_count].fields);
-                for (int i = 0; i < rows_count; i++)
-                {
-                    for (int j = 0; j < rows[i].field_count; j++)
-                    {
-                        free(rows[i].fields[j].value);
-                    }
-                    free(rows[i].fields);
-                }
-                free(rows);
-                free_headers(&headers);
+                free(csv_data.rows[csv_data.rows_count].fields);
+                free_rows(csv_data.rows, csv_data.rows_count);
+                free_headers(&csv_data.headers);
                 fclose(csv_file);
-                exit(1);
-                free(rows);
                 exit(1);
             }
             // get headers, loop over tokens, for each token create a field struct with the key and value, then push it to the row, finally push the row
             token = strtok(NULL, ",");
-            token_place++;
+            token_index++;
         }
-        rows[rows_count].field_count = token_place;
-        token_place = 0;
-        rows_count++;
+        csv_data.rows[csv_data.rows_count].field_count = token_index;
+        token_index = 0;
+        csv_data.rows_count++;
     };
     FILE *output_file = fopen(user_arugments.output_location, "w");
     if (output_file == NULL)
@@ -83,31 +76,10 @@ int main(int argc, char **argv)
         PRINT_ERROR(FILE_NOT_FOUND);
         exit(1);
     };
-    CsvData csv_data = {0};
-    csv_data.headers = headers.data;
-    csv_data.header_count = headers.count;
-    csv_data.rows = rows;
-    csv_data.line_count = rows_count;
-    // for (int i = 0; i < headers.count; i++)
-    // {
-    //     fputs(headers.data[i], output_file);
-    //     fputs(",", output_file);
-    // }
-    write_headers(&headers, output_file);
-    for (size_t i = 0; i < rows_count; i++)
-    {
-        printf("Processing row %ld with %d fields\n", i, rows[i].field_count);
-        write_csv_row(output_file, &csv_data.rows[i]);
-        fputs("\n", output_file);
-        for (size_t j = 0; j < csv_data.rows[i].field_count; j++)
-        {
-            printf("  Field index:%ld, name:%s, value:%s\n", j, rows[i].fields[j].name, rows[i].fields[j].value);
-            free(rows[i].fields[j].value);
-        }
-        free(rows[i].fields);
-    }
-    free(rows);
-    free_headers(&headers);
+    write_headers(&csv_data.headers, output_file);
+    write_rows(csv_data.rows, csv_data.rows_count, output_file);
+    free_rows(csv_data.rows, csv_data.rows_count);
+    free_headers(&csv_data.headers);
     fclose(csv_file);
     fclose(output_file);
     return 0;

@@ -10,9 +10,8 @@
 #define INITIAL_LINES_CAPACITY 50
 typedef struct
 {
-    char **headers;
+    Headers headers;
     Row *rows;
-    int header_count;
-    int line_count;
+    size_t rows_count;
 } CsvData;
 #endif

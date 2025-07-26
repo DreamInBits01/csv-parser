@@ -5,6 +5,7 @@
     "*.vue": "vue",
     "main.h": "c",
     "headers.h": "c",
-    "utils.h": "c"
+    "utils.h": "c",
+    "rows.h": "c"
   }
 }

@@ -77,6 +77,7 @@ char *remove_comma_between_quotes(char *buffer)
     };
     return buffer;
 }
+// void clean_up(CsvData)
 // void write_csv_row(FILE *fd, Row **rows, int rows_count)
 // {
 //     for (size_t i = 0; i < rows_count; i++)
@@ -92,18 +93,19 @@ char *remove_comma_between_quotes(char *buffer)
 //         fputs("\n", fd);
 //     }
 // }
-void write_csv_row(FILE *fd, const Row *row)
-{
-    for (size_t i = 0; i < row->field_count; i++)
-    {
+// void write_csv_row(FILE *fd, const Row *row)
+// {
+//     for (size_t i = 0; i < row->field_count; i++)
+//     {
 
-        fputs(row->fields[i].value, fd);
-        if (i < row->field_count - 1)
-        {
-            fputs(",", fd);
-        }
-    }
-}
+//         fputs(row->fields[i].value, fd);
+//         if (i < row->field_count - 1)
+//         {
+//             fputs(",", fd);
+//         }
+//     }
+// }
+
 // char *remove_comma_between_quotes(char *buffer)
 // {
 //     bool inside_quotes = false;

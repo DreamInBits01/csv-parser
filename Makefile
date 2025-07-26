@@ -12,7 +12,7 @@ all: index
 # Dependencies: all .c files in src/
 # Command: compile everything together
 index: src/main.c 
-	$(CC) $(CFLAGS) -o bin/index src/main.c src/headers.c src/utils.c 
+	$(CC) $(CFLAGS) -o bin/index src/main.c src/headers.c src/rows.c src/utils.c 
 
 # Clean up - removes built files
 clean:
