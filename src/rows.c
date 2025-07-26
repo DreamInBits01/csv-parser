@@ -26,6 +26,7 @@ void parse_row(CsvData *csv_data, char *token, size_t *token_index, FILE *csv_fd
         token = strtok(NULL, ",");
         *token_index += 1;
     }
+    csv_data->rows[csv_data->rows_count].field_count = *token_index;
 }
 void write_rows(Row *rows, size_t rows_count, FILE *output_fd)
 {

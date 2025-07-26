@@ -43,7 +43,7 @@ int main(int argc, char **argv)
         char *token = strtok(remove_comma_between_quotes(buffer), ",");
         size_t token_index = 0;
         parse_row(&csv_data, token, &token_index, csv_file);
-        csv_data.rows[csv_data.rows_count].field_count = token_index;
+        // be ready for the next line
         token_index = 0;
         csv_data.rows_count++;
     };
