@@ -16,7 +16,7 @@ index: src/main.c
 
 # Clean up - removes built files
 clean:
-	rm -f index
+	rm -f ./bin/index
 
 # Run the program
 run: index

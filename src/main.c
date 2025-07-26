@@ -10,7 +10,7 @@ int main(int argc, char **argv)
         exit(1);
     }
     char buffer[MAX_LINE_LENGTH];
-    int rows_capacity = INITIAL_LINES_CAPACITY;
+    size_t rows_capacity = INITIAL_LINES_CAPACITY;
     CsvData csv_data = {0};
     csv_data.headers = get_headers(csv_file);
     csv_data.rows = (Row *)malloc(rows_capacity * sizeof(Row));
