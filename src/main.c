@@ -88,6 +88,12 @@ int main(int argc, char **argv)
     csv_data.header_count = headers.count;
     csv_data.rows = rows;
     csv_data.line_count = rows_count;
+    // for (int i = 0; i < headers.count; i++)
+    // {
+    //     fputs(headers.data[i], output_file);
+    //     fputs(",", output_file);
+    // }
+    write_headers(&headers, output_file);
     for (size_t i = 0; i < rows_count; i++)
     {
         printf("Processing row %ld with %d fields\n", i, rows[i].field_count);

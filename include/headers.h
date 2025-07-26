@@ -17,4 +17,5 @@ typedef struct
 } Headers;
 Headers get_headers(FILE *csv_file_fd);
 void free_headers(Headers *headers);
+void write_headers(Headers *headers, FILE *output_fd);
 #endif

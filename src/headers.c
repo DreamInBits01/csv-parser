@@ -52,6 +52,18 @@ Headers get_headers(FILE *csv_file_fd)
     headers.count = headers_count;
     return headers;
 }
+void write_headers(Headers *headers, FILE *output_fd)
+{
+    for (size_t i = 0; i < headers->count; i++)
+    {
+        fputs(headers->data[i], output_fd);
+        if (i < headers->count - 1)
+        {
+            fputs(",", output_fd);
+        }
+    }
+    fputs("\n", output_fd);
+}
 void free_headers(Headers *headers)
 {
     if (headers && headers->data)
