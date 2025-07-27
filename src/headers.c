@@ -74,7 +74,7 @@ void free_headers(Headers *headers)
     }
     else
     {
-        printf("No headers were provided to be freed!\n");
+        PRINT_ERROR("No headers were provided!\n");
         exit(1);
     };
     free(headers->data);
