@@ -13,7 +13,7 @@ int main(int argc, char **argv)
     size_t rows_capacity = INITIAL_LINES_CAPACITY;
     CsvData csv_data = {0};
     csv_data.headers = get_headers(csv_file);
-    csv_data.rows = (Row *)malloc(rows_capacity * sizeof(Row));
+    csv_data.rows = malloc(rows_capacity * sizeof(Row));
     csv_data.rows_count = 0;
     while (fgets(buffer, MAX_LINE_LENGTH, csv_file))
     {
