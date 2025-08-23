@@ -17,7 +17,7 @@ int main(int argc, char **argv)
     csv_data.rows_count = 0;
     while (fgets(buffer, MAX_LINE_LENGTH, csv_file))
     {
-        if (csv_data.rows_count > rows_capacity)
+        if (csv_data.rows_count >= rows_capacity)
         {
             rows_capacity *= 2;
             Row *temp = realloc(csv_data.rows, rows_capacity * sizeof(Row));
