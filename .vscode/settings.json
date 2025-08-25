@@ -8,6 +8,7 @@
     "utils.h": "c",
     "rows.h": "c",
     "csv_data_struct.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "global.h": "c"
   }
 }
